@@ -7,8 +7,7 @@ IFS=$'\n\t'
 #
 # Git user.name / user.email 설정 스크립트
 #
-# ⚠️ This script must be run in a Bash environment
-#    (macOS, Linux, WSL, or Git Bash on Windows)
+# ⚠️ Run in Bash (macOS, Linux, WSL, or Git Bash on Windows)
 # -------------------------------------
 
 # ---------- utils ----------
@@ -80,10 +79,13 @@ confirm() {
   fi
   printf "%s [y/N]: " "$prompt"
   read -r ans || true
-  [[ "${ans,,}" == "y" || "${ans,,}" == "yes" ]]
+  # Bash 3.2 호환: 소문자 변환을 tr로 처리
+  ans="$(printf '%s' "$ans" | tr '[:upper:]' '[:lower:]')"
+  [[ "$ans" == "y" || "$ans" == "yes" ]]
 }
 
 is_valid_email() {
+  # 느슨한 형식 검증: something@something.something
   [[ "$1" =~ ^[^@[:space:]]+@[^@[:space:]]+\.[^@[:space:]]+$ ]]
 }
 
